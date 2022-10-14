@@ -213,6 +213,9 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
           <version>3.4.1</version>
+          <configuration>
+            <doclint>all</doclint>
+          </configuration>
         </plugin>
         <plugin>
           <groupId>org.sonatype.plugins</groupId>
@@ -758,11 +761,6 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <configuration>
-              <release>8</release>
-              <failOnWarnings>true</failOnWarnings>
-              <doclint>all</doclint>
-            </configuration>
             <executions>
               <execution>
                 <id>attach-javadocs</id>
@@ -946,10 +944,6 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <configuration>
-              <failOnWarnings>true</failOnWarnings>
-              <doclint>all</doclint>
-            </configuration>
             <executions>
               <execution>
                 <id>attach-javadocs</id>
