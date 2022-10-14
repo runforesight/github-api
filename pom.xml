@@ -1,16 +1,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.kohsuke</groupId>
+  <groupId>com.runforesight</groupId>
   <artifactId>github-api</artifactId>
-  <version>1.312-SNAPSHOT</version>
+  <version>1.312.1-SNAPSHOT</version>
   <name>GitHub API for Java</name>
-  <url>https://github-api.kohsuke.org/</url>
   <description>GitHub API for Java</description>
 
   <scm>
-    <connection>scm:git:git@github.com/hub4j/${project.artifactId}.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com/hub4j/${project.artifactId}.git</developerConnection>
-    <url>https://github.com/hub4j/github-api/</url>
+    <connection>scm:git:https://${GITHUB_TOKEN}@github.com/runforesight/${project.artifactId}.git</connection>
+    <developerConnection>scm:git:https://${GITHUB_TOKEN}@github.com/runforesight/${project.artifactId}.git</developerConnection>
+    <url>https://github.com/runforesight/github-api</url>
     <tag>HEAD</tag>
   </scm>
 
@@ -874,7 +873,91 @@
         </plugins>
       </build>
     </profile>
-
+    <profile>
+      <id>foresight-release</id>
+      <distributionManagement>
+        <repository>
+          <id>foresight-3rdparty-releases</id>
+          <name>Releases</name>
+          <url>https://repo.thundra.io/content/repositories/foresight-3rdparty-releases/</url>
+        </repository>
+        <snapshotRepository>
+          <id>foresight-3rdparty-snapshots</id>
+          <name>Snapshots</name>
+          <url>https://repo.thundra.io/content/repositories/foresight-3rdparty-snapshots/</url>
+          <uniqueVersion>true</uniqueVersion>
+        </snapshotRepository>
+        <site>
+          <id>github-pages</id>
+          <url>gitsite:git@github.com/runforesight/${project.artifactId}.git</url>
+        </site>
+      </distributionManagement>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>none</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+                <configuration>
+                  <gpgArguments>
+                    <arg>--pinentry-mode</arg>
+                    <arg>loopback</arg>
+                  </gpgArguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.sonatype.plugins</groupId>
+            <artifactId>nexus-staging-maven-plugin</artifactId>
+            <version>1.6.13</version>
+            <extensions>false</extensions>
+          </plugin>
+          <plugin>
+            <groupId>com.github.siom79.japicmp</groupId>
+            <artifactId>japicmp-maven-plugin</artifactId>
+            <version>0.16.0</version>
+            <configuration>
+              <skip>true</skip>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-sources</id>
+                <goals>
+                  <goal>jar-no-fork</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
   </profiles>
   <reporting>
     <plugins>

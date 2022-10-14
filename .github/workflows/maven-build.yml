@@ -1,6 +1,6 @@
 name: CI
 
-on: 
+on:
   push:
     branches:
       - main
@@ -36,7 +36,7 @@ jobs:
       - name: Maven Install (skipTests)
         env:
           MAVEN_OPTS: ${{ env.JAVA_11_PLUS_MAVEN_OPTS }}
-        run: mvn -B clean install -DskipTests --file pom.xml
+        run: mvn -B clean install -DskipTests -Djapicmp.skip --file pom.xml
   site:
     name: site (Java ${{ matrix.java }})
     runs-on: ubuntu-latest
@@ -55,7 +55,7 @@ jobs:
       - name: Maven Site
         env:
           MAVEN_OPTS: ${{ env.JAVA_11_PLUS_MAVEN_OPTS }}
-        run: mvn -B  clean site -D enable-ci --file pom.xml
+        run: mvn -B  clean site -D enable-ci -Djapicmp.skip --file pom.xml
   test-8:
     name: test (${{ matrix.os }}, Java 8)
     runs-on: ${{ matrix.os }}-latest
@@ -75,7 +75,7 @@ jobs:
     # JDK 8
     - name: Maven Install with Code Coverage
       run: mvn -B clean install -D enable-ci -Djapicmp.skip --file pom.xml
-    - name: Codecov Report 
+    - name: Codecov Report
       uses: codecov/codecov-action@v3.1.0
   test:
     name: test (${{ matrix.os }}, Java ${{ matrix.java }})
@@ -103,4 +103,4 @@ jobs:
       if: matrix.os != 'windows'
       env:
         MAVEN_OPTS: ${{ env.JAVA_11_PLUS_MAVEN_OPTS }}
-      run: mvn -B clean install -D enable-ci --file pom.xml "-Dsurefire.argLine=--add-opens java.base/java.net=ALL-UNNAMED"
+      run: mvn -B clean install -D enable-ci -Djapicmp.skip --file pom.xml "-Dsurefire.argLine=--add-opens java.base/java.net=ALL-UNNAMED"

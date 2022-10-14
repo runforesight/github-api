@@ -1,0 +1,58 @@
+# This workflow will build a Java project with Maven
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+
+name: Snapshot
+
+on:
+  workflow_dispatch:
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.FORESIGHT_GITHUB_TOKEN }}
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: 8
+          distribution: 'adopt'
+          cache: 'maven'
+
+      - name: Configure CI Git User
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+
+      - name: Configure Maven settings.xml
+        uses: whelk-io/maven-settings-xml-action@v14
+        with:
+          repositories: >-
+            [
+              {
+                "id": "foresight-3rdparty-snapshots",
+                "url": "https://repo.thundra.io/content/repositories/foresight-3rdparty-snapshots",
+                "releases": {
+                  "enabled": "false"
+                },
+                "snapshots": {
+                  "enabled": "true"
+                }
+              }
+            ]
+          servers: >-
+            [
+              {
+                "id": "foresight-3rdparty-snapshots",
+                "username": "${{ secrets.THUNDRA_INTERNAL_REPO_USERNAME }}",
+                "password": "${{ secrets.THUNDRA_INTERNAL_REPO_PASSWORD }}"
+              }
+            ]
+
+      - name: Build and Release Snapshot with Maven
+        env:
+          GITHUB_TOKEN: ${{ secrets.FORESIGHT_GITHUB_TOKEN }}
+        run: mvn clean install -DskipTests -Darguments=-DskipTests deploy --batch-mode -P foresight-release
