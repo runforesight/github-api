@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.runforesight</groupId>
   <artifactId>github-api</artifactId>
-  <version>1.312.1-SNAPSHOT</version>
+  <version>1.312.2-SNAPSHOT</version>
   <name>GitHub API for Java</name>
   <description>GitHub API for Java</description>
 
