@@ -34,7 +34,7 @@ jobs:
             [
               {
                 "id": "foresight-3rdparty-releases",
-                "url": "https://repo.thundra.io/content/repositories/foresight-3rdparty-releases"
+                "url": "https://repo.thundra.io/content/repositories/foresight-3rdparty-releases",
                 "releases": {
                   "enabled": "true"
                 },
