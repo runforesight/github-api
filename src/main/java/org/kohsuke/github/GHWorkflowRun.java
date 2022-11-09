@@ -51,6 +51,7 @@ public class GHWorkflowRun extends GHObject {
     private HeadCommit headCommit;
 
     private String event;
+    private String displayTitle;
     private String status;
     private String conclusion;
 
@@ -222,6 +223,15 @@ public class GHWorkflowRun extends GHObject {
      */
     public GHEvent getEvent() {
         return EnumUtils.getNullableEnumOrDefault(GHEvent.class, event, GHEvent.UNKNOWN);
+    }
+
+    /**
+     * The display title.
+     *
+     * @return the display title
+     */
+    public String getDisplayTitle() {
+        return displayTitle;
     }
 
     /**
